@@ -5,7 +5,33 @@
   ],
   "headers": [
     {
-      "source": "/Build/(.*)\\.br",
+      "source": "/(.*)\\.wasm\\.br",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "br"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/wasm"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.js\\.br",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "br"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.data\\.br",
       "headers": [
         {
           "key": "Content-Encoding",
@@ -18,20 +44,7 @@
       ]
     },
     {
-      "source": "/WebGLBuild/Build/(.*)\\.br",
-      "headers": [
-        {
-          "key": "Content-Encoding",
-          "value": "br"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/octet-stream"
-        }
-      ]
-    },
-    {
-      "source": "/Build/(.*)\\.gz",
+      "source": "/(.*)\\.wasm\\.gz",
       "headers": [
         {
           "key": "Content-Encoding",
@@ -39,12 +52,25 @@
         },
         {
           "key": "Content-Type",
-          "value": "application/octet-stream"
+          "value": "application/wasm"
         }
       ]
     },
     {
-      "source": "/WebGLBuild/Build/(.*)\\.gz",
+      "source": "/(.*)\\.js\\.gz",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.data\\.gz",
       "headers": [
         {
           "key": "Content-Encoding",
@@ -58,3 +84,4 @@
     }
   ]
 }
+

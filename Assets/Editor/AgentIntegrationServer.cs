@@ -480,12 +480,12 @@ public static class AgentIntegrationServer
             Vector3 dir = pos2 - pos1;
             float length = dir.magnitude;
             
-            // Road segment
+            // Road segment (made 2m thick downwards to prevent WebGL physics tunneling)
             GameObject segment = GameObject.CreatePrimitive(PrimitiveType.Cube);
             segment.name = "TrackSegment_" + i;
             segment.transform.parent = trackParent.transform;
-            segment.transform.position = center;
-            segment.transform.localScale = new Vector3(width, 0.1f, length + 0.2f);
+            segment.transform.position = new Vector3(center.x, center.y - 1f, center.z);
+            segment.transform.localScale = new Vector3(width, 2f, length + 0.2f);
             segment.transform.rotation = Quaternion.LookRotation(dir);
             segment.GetComponent<Renderer>().sharedMaterial = roadMat;
             
@@ -514,7 +514,7 @@ public static class AgentIntegrationServer
         
         // 6. Create Vehicle (positioned on road segment 0)
         GameObject vehicle = new GameObject("VehiclePlaceholder");
-        vehicle.transform.position = new Vector3(25f, 0.6f, 0f); // slightly higher to avoid clipping
+        vehicle.transform.position = new Vector3(25f, 1.5f, 0f); // spawned higher to prevent clipping/tunneling on WebGL startup
         
         // Add Box Collider matching the sedan dimensions
         BoxCollider boxCollider = vehicle.AddComponent<BoxCollider>();
@@ -889,7 +889,33 @@ public static class AgentIntegrationServer
             string vercelJsonContent = @"{
   ""headers"": [
     {
-      ""source"": ""Build/(.*)\\.br"",
+      ""source"": ""Build/(.*)\\.wasm\\.br"",
+      ""headers"": [
+        {
+          ""key"": ""Content-Encoding"",
+          ""value"": ""br""
+        },
+        {
+          ""key"": ""Content-Type"",
+          ""value"": ""application/wasm""
+        }
+      ]
+    },
+    {
+      ""source"": ""Build/(.*)\\.js\\.br"",
+      ""headers"": [
+        {
+          ""key"": ""Content-Encoding"",
+          ""value"": ""br""
+        },
+        {
+          ""key"": ""Content-Type"",
+          ""value"": ""application/javascript""
+        }
+      ]
+    },
+    {
+      ""source"": ""Build/(.*)\\.data\\.br"",
       ""headers"": [
         {
           ""key"": ""Content-Encoding"",
@@ -902,7 +928,33 @@ public static class AgentIntegrationServer
       ]
     },
     {
-      ""source"": ""Build/(.*)\\.gz"",
+      ""source"": ""Build/(.*)\\.wasm\\.gz"",
+      ""headers"": [
+        {
+          ""key"": ""Content-Encoding"",
+          ""value"": ""gzip""
+        },
+        {
+          ""key"": ""Content-Type"",
+          ""value"": ""application/wasm""
+        }
+      ]
+    },
+    {
+      ""source"": ""Build/(.*)\\.js\\.gz"",
+      ""headers"": [
+        {
+          ""key"": ""Content-Encoding"",
+          ""value"": ""gzip""
+        },
+        {
+          ""key"": ""Content-Type"",
+          ""value"": ""application/javascript""
+        }
+      ]
+    },
+    {
+      ""source"": ""Build/(.*)\\.data\\.gz"",
       ""headers"": [
         {
           ""key"": ""Content-Encoding"",

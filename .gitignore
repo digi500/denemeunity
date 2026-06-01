@@ -29,3 +29,8 @@
 /[Bb]uild/
 /[Bb]uilds/
 # WebGLBuild/ is tracked!
+
+# Ignore local token and screenshots
+/github token.txt
+/screenshot.png
+
